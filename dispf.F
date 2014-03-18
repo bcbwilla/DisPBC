@@ -16,7 +16,7 @@ C
  113  Format(' l=',I5,' m=',I5,' n=',I5)
 
 
-      If(IPrint.gt.0) then
+      If(IPrint.gt.1) then
         Write(IOut,*)'Entering DispF.'
         endif
 
@@ -72,6 +72,20 @@ C     kth component of atoms I and J
 C     Forces for interactions between primary unit cell and neighbor unit cells
       If(NPDir.gt.0) then
 
+C       Set loop limits based on dimension of periodicity
+        NUC1 = NUCExt
+        If(NPDir.ge.2) then
+          NUC2 = NUCExt
+        else
+          NUC2 = 0
+          endif
+        
+        If(NPDir.eq.3) then
+          NUC3 = NUCExt
+        else
+          NUC3 = 0
+          endif
+
         If(IPrint.gt.1) then
           Write(IOut,*)'Forces for interactions out of unit cell.'
           endif
@@ -87,9 +101,9 @@ C     Forces for interactions between primary unit cell and neighbor unit cells
             R0J = R0(J)
             R0IJ = R0I + R0J
 
-            Do 42 l=-NUCExt,NUCExt
-              Do 43 m=-NUCExt,NUCExt
-                Do 44 n=-NUCExt,NUCExt
+            Do 42 l=-NUC1,NUC1
+              Do 43 m=-NUC2,NUC2
+                Do 44 n=-NUC3,NUC3
 
 C     Skip central unit cell
                   If(.not.((l.eq.0).and.(m.eq.0).and.(n.eq.0))) then
@@ -170,9 +184,9 @@ C     For each TV
               R0J = R0(J)
               R0IJ = R0I + R0J
 
-              Do 53 l=-NUCExt,NUCExt
-                Do 54 m=-NUCExt,NUCExt
-                  Do 55 n=-NUCExt,NUCExt
+              Do 53 l=-NUC1,NUC1
+                Do 54 m=-NUC2,NUC2
+                  Do 55 n=-NUC3,NUC3
 
 C     Skip central unit cell
                     If(.not.((l.eq.0).and.(m.eq.0).and.(n.eq.0))) then
@@ -237,7 +251,7 @@ C     Translational vector 1
         Call PrintM(IOut,'All forces:',FXYZ,NAtoms+NPDir)
         endif
 
-      If(IPrint.gt.0) then
+      If(IPrint.gt.1) then
         Write(IOut,*)'Exiting DispF.'
         endif
 

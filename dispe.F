@@ -34,7 +34,7 @@ C
  113  Format(' l=',I5,' m=',I5,' n=',I5)
 
 
-      If(IPrint.gt.0) then
+      If(IPrint.gt.1) then
         Write(IOut,*)'Entering DispE.'
         endif
 
@@ -79,6 +79,20 @@ C     interacting with atoms in neighbor unit cells
           Write(IOut,*)'Disp. energy for interactions out of unit cell'
           endif
 
+C       Set loop limits based on dimension of periodicity
+        NUC1 = NUCExt
+        If(NPDir.ge.2) then
+          NUC2 = NUCExt
+        else
+          NUC2 = 0
+          endif
+        
+        If(NPDir.eq.3) then
+          NUC3 = NUCExt
+        else
+          NUC3 = 0
+          endif
+
         Do 20 I=1,NAtoms
           Do 21 J=1,NAtoms
             C6I = C6(I)
@@ -89,9 +103,9 @@ C     interacting with atoms in neighbor unit cells
             R0J = R0(J)
             R0IJ = R0I + R0J
 
-            Do 22 l=-NUCExt,NUCExt
-              Do 23 m=-NUCExt,NUCExt
-                Do 24 n=-NUCExt,NUCExt
+            Do 22 l=-NUC1,NUC1
+              Do 23 m=-NUC2,NUC2
+                Do 24 n=-NUC3,NUC3
 
 C     Skip central unit cell
                   If(.not.((l.eq.0).and.(m.eq.0).and.(n.eq.0))) then
@@ -129,7 +143,7 @@ C     Skip central unit cell
         Write(IOut,*)'Enuc: ',ENuc
         endif
 
-      If(IPrint.gt.0) then
+      If(IPrint.gt.1) then
         Write(IOut,*)'Exiting DispE.'
         endif
 
