@@ -10,9 +10,10 @@ C
       Dimension R0(*), C6(*)
 
  111  Format(' Atom',I5,I5)
- 112  Format(' C6I=',F6.4,' C6J=', F6.4,' C6IJ=',F6.4,/,
-     $       ' R0I=',F6.4,' R0J=',F6.4,' R0IJ=',F6.4,/,
-     $       ' F=',E12.6,/,' RIJ=',F6.4,' S6=',F6.4,' SR6=',F6.4)
+ 112  Format(' C6I=',F10.5,' C6J=', F10.5,' C6IJ=',F10.5,/,
+     $       ' R0I=',F10.5,' R0J=',F10.5,' R0IJ=',F10.5,/,
+     $       ' F=',E12.6,' DF=',E12.6,/,' RIJ=',F10.5,
+     $       ' S6=',F10.5,' SR6=',F10.5,' D6=',F10.5)
  113  Format(' l=',I5,' m=',I5,' n=',I5)
 
 
@@ -42,15 +43,15 @@ C     Forces for interactions within the primary unit cell
 C     For each coordinate
           Do 32 K=1,3 
 C     kth component of atoms I and J
-            KI = C(K,I)
-            KJ = C(K,J) 
+            CKI = C(K,I)
+            CKJ = C(K,J) 
               
             RIJ = RSep(I,J,C,0,0,0,NAtoms,NPDir)
             F = FDmp(RIJ,D6,SR6,R0IJ)
             FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,K,
      $              C,0,0,0,0,NAtoms,NPDir,0)                
 
-            Fk = 6*F*(KI - KJ)/RIJ**8 - FDr/RIJ**6
+            Fk = -S6*C6IJ*(-6*F*(CKI-CKJ)/RIJ**8 + FDr/RIJ**6)
 
             FXYZ(K,I) = FXYZ(K,I) + Fk
             FXYZ(K,J) = FXYZ(K,J) - Fk
@@ -59,7 +60,8 @@ C     kth component of atoms I and J
 
           If(IPrint.gt.2) then
             Write(IOut,111)I,J
-            Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,RIJ,S6,SR6
+            Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,FDr,RIJ,
+     $        S6,SR6,D6
             endif
 
    31   Continue
@@ -69,7 +71,7 @@ C     kth component of atoms I and J
         Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms+NPDir)
         endif
 
-C     Forces for interactions between primary unit cell and neighbor unit cells
+C     Forces for interactions between puc and neighbors
       If(NPDir.gt.0) then
 
 C       Set loop limits based on dimension of periodicity
@@ -110,25 +112,25 @@ C     Skip central unit cell
 
                     Do 45 K=1,3
 C     kth component of atoms I and J
-                      KI = C(K,I)
-                      KJ = C(K,J) 
+                      CKI = C(K,I)
+                      CKJ = C(K,J) 
 C     kth component of the TVs 
                       If(NPDir.ge.1) then
-                        T1k = C(k,NAtoms+1)
+                        T1K = C(k,NAtoms+1)
                       else
-                        T1k = 0
+                        T1K = 0
                         endif
                  
                       If(NPDir.ge.2) then
-                        T2k = C(k,NAtoms+2)
+                        T2K = C(k,NAtoms+2)
                       else
-                        T2k = 0
+                        T2K = 0
                         endif 
 
                       If(NPDir.ge.3) then
-                        T3k = C(k,NAtoms+3)
+                        T3K = C(k,NAtoms+3)
                       else
-                        T3k = 0
+                        T3K = 0
                         endif 
                       
                       RIJ = RSep(I,J,C,l,m,n,NAtoms,NPDir)
@@ -136,8 +138,10 @@ C     kth component of the TVs
                       FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,K,
      $                            C,l,m,n,0,NAtoms,NPDir,0)                
 
-                      Fk = 6*F*(KI - KJ - l*Tk1 - m*Tk2 - n*Tk3)/RIJ**8
-                      Fk = Fk - FDr/RIJ**6
+                      Fk = 6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
+                      Fk = -Fk + FDr/RIJ**6
+                      Fk = S6*C6IJ*Fk
+
 
                       FXYZ(K,I) = FXYZ(K,I) + Fk
 
@@ -194,8 +198,8 @@ C     Skip central unit cell
                       Do 56 K=1,3
 
 C     Kth component of atoms I and J
-                        KI = C(K,I)
-                        KJ = C(K,J) 
+                        CKI = C(K,I)
+                        CKJ = C(K,J) 
 
 C     Get the k component of the TVs 
 C     Translational vector 1
@@ -224,7 +228,8 @@ C     Translational vector 1
      $                               l,m,n,IP,NAtoms,NPDir,1)              
 
                         Fk = -6*F*(KI-KJ-l*T1K-m*T2K-n*T3K)/RIJ**8
-                        Fk = Fk - FDr/RIJ**6
+                        Fk = -Fk + FDr/RIJ**6
+                        Fk = S6*C6IJ*Fk
 
                         FXYZ(K,NAtoms+IP) = FXYZ(K,NAtoms+IP) + Fk
 
