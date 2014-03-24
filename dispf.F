@@ -56,6 +56,8 @@ C     kth component of atoms I and J
             FXYZ(K,I) = FXYZ(K,I) + Fk
             FXYZ(K,J) = FXYZ(K,J) - Fk
 
+
+
    32     Continue
 
           If(IPrint.gt.2) then
@@ -204,33 +206,40 @@ C     Kth component of atoms I and J
 C     Get the k component of the TVs 
 C     Translational vector 1
                         If(NPDir.ge.1) then
-                          T1k = C(k,NAtoms+1)
+                          T1K = C(K,NAtoms+1)
                         else
-                          T1k = 0
+                          T1K = 0
                           endif
                  
                         If(NPDir.ge.2) then
-                          T2k = C(k,NAtoms+2)
+                          T2K = C(K,NAtoms+2)
                         else
-                          T2k = 0
+                          T2K = 0
                           endif 
 
                         If(NPDir.ge.3) then
-                          T3k = C(k,NAtoms+3)
+                          T3K = C(K,NAtoms+3)
                         else
-                          T3k = 0
+                          T3K = 0
                           endif 
 
                       
                         RIJ = RSep(I,J,C,l,m,n,NAtoms,NPDir)
                         F = FDmp(RIJ,D6,SR6,R0IJ)
                         FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,k,C,
-     $                               l,m,n,IP,NAtoms,NPDir,1)              
+     $                               l,m,n,IP,NAtoms,NPDir,1)      
+        
+                        Write(IOut,*)'RIJ: ',RIJ
+                        Write(IOut,*)'F: ',F,'FDr: ',FDr        
 
-                        Fk = -6*F*(KI-KJ-l*T1K-m*T2K-n*T3K)/RIJ**8
-                        Fk = -Fk + FDr/RIJ**6
+
+                        Fk = 6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
+                        Write(IOut,*)'Fk1: ',Fk
+                        Fk = Fk + FDr/RIJ**6
+                        Write(IOut,*)'Fk2: ',Fk
                         Fk = S6*C6IJ*Fk
-
+                        Write(IOut,*)'Fk3: ',Fk
+                        Write(IOut,*)
                         FXYZ(K,NAtoms+IP) = FXYZ(K,NAtoms+IP) + Fk
 
    56                   Continue

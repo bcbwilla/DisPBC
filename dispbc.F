@@ -25,7 +25,7 @@ C
 
       Integer IAn(NAtoms+NPDir)
       Dimension C(3,NAtoms+NPDir), FXYZ(3,NAtoms+NPDir)
-      Dimension C6(NAtoms), R0(NAtoms)
+      Dimension C6(NAtoms), R0(NAtoms), FXYZ2(3,NAtoms+NPDir)
       Logical First
       Save NUCExt
       Data NUCExt/0/
@@ -44,6 +44,10 @@ C     Determine how many unit cells out to include disp. interactions
 C     Compute the forces
         Call DispF(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
      $    S6,SR6,NUCExt,FXYZ)
+
+C     Compute the forces on TVs numerically
+        Call DispFT(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
+     $    S6,SR6,NUCExt,FXYZ2)
         endif
 
       Write(IOut,*)'Exiting DisPBC.'

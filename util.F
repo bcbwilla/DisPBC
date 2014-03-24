@@ -81,35 +81,39 @@ C
       Implicit Real*8 (A-H,O-Z)
       Dimension C(3,NAtoms+NPDir)
 
+C      Write(*,*)'RIJ: ',RIJ,' D6: ',D6,' SR6: ',SR6
+C      Write(*,*)'R0IJ: ',R0IJ,' F: ',F,' I: ',I
+C      Write(*,*)'J: ',J,'k: ',k,' l: ',l
+C      Write(*,*)'m: ',m,' n: ',n,'IP: ',IP
+
 C     Atom I
-      kI = C(k,I)
+      CKI = C(K,I)
 C     Atom J
-      kJ = C(k,J)
+      CKJ = C(K,J)
      
 C     Get the k component of the TVs 
 C     Translational vector 1
       If(NPDir.ge.1) then
-        T1k = C(k,NAtoms+1)
+        T1K = C(K,NAtoms+1)
       else
-        T1k = 0
+        T1K = 0
         endif
      
       If(NPDir.ge.2) then
-        T2k = C(k,NAtoms+2)
+        T2K = C(K,NAtoms+2)
       else
-        T2k = 0
+        T2K = 0
         endif 
 
       If(NPDir.ge.3) then
-        T3k = C(k,NAtoms+3)
+        T3K = C(K,NAtoms+3)
       else
-        T3k = 0
+        T3K = 0
         endif 
 
-      FTmp = D6*(kI - kJ - l*T1k - m*T2k - n*T3k)
+      FTmp = D6*(CKI - CKJ - l*T1K - m*T2K - n*T3K)
       FTmp = FTmp * Exp(-D6*(RIJ/(SR6*R0IJ)-1)) * (F**2)
       FTmp = FTmp / (RIJ*(SR6*R0IJ))
-
 C     Doing a derivative with respect to T or R?
       If(Iwrt.eq.1) then
 C     Differential w.r.t. T
@@ -129,6 +133,19 @@ C     what TV you're differentiating with respect to.
 
       FDmpDr = FTmp
     
+      Return
+      End
+
+*Deck FPtSt
+      Real*8 Function FPtSt(F,dT)
+C
+C     Compute numerical derivative using Five point stencil method
+C
+      Implicit Real*8(A-H,O-Z)
+      Real*8 F(4)
+
+      FPtSt = (-F(1) + 8*F(2) - 8*F(3) + F(4))/(12*dT)
+
       Return
       End
 

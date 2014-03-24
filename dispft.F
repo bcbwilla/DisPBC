@@ -55,6 +55,7 @@ C     Shift translation vectors according to five pt. term.
             C2(I,NAtoms+N) = C(I,NAtoms+N) + FP(J)
 
             Write(*,*)'TV: ',N,' Coord: ',I,' Term: ',J
+            Write(*,*)'FPJ: ',FP(J)
 C            Write(*,*)'C2:'
 C            Do JA=1,NAtoms+NPDir
 C              Write(*,*)(C2(IA,JA),IA=1,3)

@@ -20,7 +20,7 @@ C
         endif
 
 C     The energy cutoff
-      ECut = 0.000001
+      ECut = 0.0001
 
 C     Calculate the first dispersion energy without augmenting the UC
 

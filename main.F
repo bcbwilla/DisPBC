@@ -15,7 +15,7 @@ C     Log file
 C     Print level
       IPrint = 2
 
-      Do I=1,1
+      Do I=1,3
 
         Write(IOut,'(" *  Test",I3,"  * ")')I
 C     Initialize test values
