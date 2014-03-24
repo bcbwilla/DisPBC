@@ -223,23 +223,23 @@ C     Translational vector 1
                           T3K = 0
                           endif 
 
+C     Get coefficient based on TV
+                        If(IP.eq.1) then
+                          Ia = l
+                        else if(IP.eq.2) then
+                          Ia = m
+                        else if(IP.eq.3) then
+                          Ia = n
+                          endif
                       
                         RIJ = RSep(I,J,C,l,m,n,NAtoms,NPDir)
                         F = FDmp(RIJ,D6,SR6,R0IJ)
                         FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,k,C,
      $                               l,m,n,IP,NAtoms,NPDir,1)      
-        
-                        Write(IOut,*)'RIJ: ',RIJ
-                        Write(IOut,*)'F: ',F,'FDr: ',FDr        
 
-
-                        Fk = 6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
-                        Write(IOut,*)'Fk1: ',Fk
+                        Fk = Ia*6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
                         Fk = Fk + FDr/RIJ**6
-                        Write(IOut,*)'Fk2: ',Fk
                         Fk = S6*C6IJ*Fk
-                        Write(IOut,*)'Fk3: ',Fk
-                        Write(IOut,*)
                         FXYZ(K,NAtoms+IP) = FXYZ(K,NAtoms+IP) + Fk
 
    56                   Continue
