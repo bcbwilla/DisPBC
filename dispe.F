@@ -86,6 +86,7 @@ C     Skip case I=J for T=0.
                   F = FDmp(RIJ,D6,SR6,R0IJ)
 
                   ED0 = ED0 - S6*(C6IJ/RIJ**6)*F 
+                  IC = IC + 1
 
                   If(IPrint.gt.3) then
                     Write(IOut,113)l,m,n
@@ -106,16 +107,16 @@ C     Skip case I=J for T=0.
    21     Continue
    20   Continue
 
-      ED = ED0/2
+      ED = ED0
 
       If(IPrint.gt.1) then
-        Write(IOut,*)'EPuc: ',EPuc
-        Write(IOut,*)'Enuc: ',ENuc
+        Write(IOut,*)'ED: ',ED
         endif
 
       If(IPrint.gt.1) then
         Write(IOut,*)'Exiting DispE.'
         endif
+
 
       Return
       End

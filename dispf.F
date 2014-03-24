@@ -145,8 +145,10 @@ C     For each TV
                 Do 54 m=-NUC2,NUC2
                   Do 55 n=-NUC3,NUC3
 
-C     Skip central unit cell
-                    If(.not.((l.eq.0).and.(m.eq.0).and.(n.eq.0))) then
+C     Skip case I=J for T=0.
+                   SkIJ=(l.eq.0).and.(m.eq.0).and.(n.eq.0).and.(J.eq.I)
+
+                    If(.not.SkIJ) then
 
                       Do 56 K=1,3
 
@@ -183,7 +185,7 @@ C     Translational vector 1
 
                         Fk = 6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
                         Fk = -Fk + FDr/RIJ**6
-                        Fk = S6*C6IJ*Fk
+                        Fk = S6*C6IJ*Fk/2
 
                         FXYZ(K,NAtoms+IP) = FXYZ(K,NAtoms+IP) + Fk
 
