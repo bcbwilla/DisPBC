@@ -23,8 +23,6 @@ C
         Write(IOut,*)'Entering DispFT.'
         endif
 
-       Write(*,*)'NPDir: ',NPDir
-
 C     Copy coordinates into new array
 
       Do JA=1,NAtoms+NPDir
@@ -32,12 +30,6 @@ C     Copy coordinates into new array
           C2(IA,JA) = C(IA,JA)
           enddo
         enddo
-        
-C      Write(*,*)'C2: '
-C      Do JA=1,NAtoms+NPDir
-C        Write(*,*)(C2(IA,JA),IA=1,3)
-C        enddo
-C            Write(*,*)
 
 C     Five point stencil function shift coefficients
       FP(1) = 2D0*dT
@@ -56,10 +48,6 @@ C     Shift translation vectors according to five pt. term.
 
             Write(*,*)'TV: ',N,' Coord: ',I,' Term: ',J
             Write(*,*)'FPJ: ',FP(J)
-C            Write(*,*)'C2:'
-C            Do JA=1,NAtoms+NPDir
-C              Write(*,*)(C2(IA,JA),IA=1,3)
-C              enddo
         
 C    Compute the energy with new TV
             Call DispE(IOut,0,NAtoms,NPDir,C2,R0,C6,D6,S6,SR6,
@@ -70,19 +58,13 @@ C    Compute the energy with new TV
 
 C    Restore translation vector for next calc
             C2(I,NAtoms+N) = C(I,NAtoms+N)
-C            Write(*,*)'C2 restored:'
-C            Do JA=1,NAtoms+NPDir
-C              Write(*,*)(C2(IA,JA),IA=1,3)
-C              enddo
 
 
    30       Continue
 
           FT = -FPtSt(E,dT)
-          Write(*,*)'FT: ',FT
           FXYZ2(I,NAtoms+N) = FT
-          Write(*,*)
-          Write(*,*)
+
 
    20     Continue
 
