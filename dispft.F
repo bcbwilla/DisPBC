@@ -31,9 +31,10 @@ C     FXYZ   - Array of forces on atoms and translation vectors.
 C
 
       Implicit Real*8(A-H,O-Z)
-      Dimension C(3,*),C2(3,NAtoms+NPDir),FXYZ(3,*)
-      Dimension R0(*), C6(*), FP(4), E(4)
-      Parameter (dT = 0.0000001)
+      Parameter (dT=0.0000001)
+      Real*8 C(3,*),C2(3,NAtoms+NPDir),FXYZ(3,*)
+      Real*8 R0(*), C6(*), FP(4), E(4)
+
 
  111  Format(' Atom',I5,I5)
  112  Format(' C6I=',F10.5,' C6J=', F10.5,' C6IJ=',F10.5,/,
@@ -48,7 +49,6 @@ C
         endif
 
 C     Copy coordinates into new array
-
       Do JA=1,NAtoms+NPDir
         Do IA=1,3
           C2(IA,JA) = C(IA,JA)

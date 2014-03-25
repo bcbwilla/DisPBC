@@ -39,8 +39,7 @@ C
       Implicit Real*8(A-H,O-Z)
 
       Integer IAn(NAtoms+NPDir)
-      Dimension C(3,*), FXYZ(3,*)
-      Dimension C6(*), R0(*)
+      Real*8 C(3,*), FXYZ(3,*), C6(*), R0(*)
       Save NUCExt
       Data NUCExt/0/
 

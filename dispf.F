@@ -28,8 +28,7 @@ C     Out:
 C     FXYZ   - Array of forces on atoms and translation vectors.
 C
       Implicit Real*8(A-H,O-Z)
-      Dimension C(3,*), FXYZ(3,*)
-      Dimension R0(*), C6(*)
+      Real*8 C(3,*), FXYZ(3,*), R0(*), C6(*)
 
  111  Format(' Atom',I5,I5)
  112  Format(' C6I=',F10.5,' C6J=', F10.5,' C6IJ=',F10.5,/,
