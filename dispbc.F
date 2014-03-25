@@ -1,10 +1,18 @@
+C
+C     Compute the energy and forces due to van der Waals dispersion
+C     energy in periodic systems using the DFT-D2 correction proposed
+C     by Grimme.
+C
+C     Grimme, S. (2006), Semiempirical GGA-type density functional 
+C     constructed with a long-range dispersion correction. 
+C     J. Comput. Chem., 27: 1787–1799. doi: 10.1002/jcc.20495
+C
+C
 *Deck DisPBC
       Subroutine DisPBC(IOut,IPrint,IWhat,NAtoms,NPDir,
      $  C,R0,C6,D6,S6,SR6,ED,FXYZ)
 C
-C     Main subroutine to compute the energy and forces due to Grimme
-C     DFT-D2 dispersion correction.
-C
+C     Main subroutine to compute the energy and forces
 C
 C     Arguments
 C     In:
@@ -38,9 +46,11 @@ C
 
       Write(IOut,*)'Entering DisPBC.'
 
+C     NUCExt is the number of unit cells to add in one direction
       If(NUCExt.eq.0) then
         Write(IOut,*)'Computing dispersion energy.'
 C     Determine how many unit cells out to include disp. interactions
+C     and compute the energy
         Call DisCon(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
      $    S6,SR6,NUCExt,ED)
         endif
