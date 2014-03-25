@@ -1,12 +1,35 @@
 *Deck DispConv
-C Description
-C
-C
       Subroutine DisCon(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
      $  S6,SR6,NUCExt,ED)
-
+C
+C     Determine how many neighboring cells to include in calculations.
+C
+C     Arguments
+C     In:
+C     IOut   - Log file to print to
+C     IPrint - Print flag.  Ranges 0-4. Higher prints more
+C     IWhat  - 0 -> Energy, 1 -> Forces, 2 -> Trans. vector forces 
+C              numerically (for consistency check) 
+C     NAtoms - Number of atoms in unit cell
+C     NPDir  - Number of periodic directions (translation vectors)
+C     C      - Array of atom positions, including translation vectors
+C              Atoms are stored first, followed by trans. vectors.
+C     R0     - Array of atomic van der Waal radii.  Atom order is same
+C              as in C array.
+C     C6     - Arrary of atomic C6 coefficients.  Atom order is same as
+C              in C array.
+C     D6     - D6 parameter
+C     S6     - Functional-dependent parameter
+C     SR6    - Some other parameter related to van Der Waals radii
+C     NUCExt - The number of unit cells to extend from the reference
+C              unit cell in 1 direction.
+C
+C     Out:
+C     ED     - Dispersion Energy
+C
       Implicit Real*8(A-H,O-Z)
       Dimension C(3,NAtoms+NPDir), R0(NAtoms), C6(NAtoms)
+      Parameter (ECut = 0.0001)
 
 111   Format(' Cycle',I3,/,'  NUCExt:',I3,' En:',F15.11,' Ediff:',
      $  F13.9,' NAt2:',I8)
@@ -18,9 +41,6 @@ C
       If(IPrint.gt.0) then
         Write(IOut,*)'Entering DisCon.'
         endif
-
-C     The energy cutoff
-      ECut = 0.0001
 
 C     Calculate the first dispersion energy without augmenting the UC
 

@@ -2,8 +2,30 @@
       Subroutine DispF(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
      $  S6,SR6,NUCExt,FXYZ)
 C
-C     Compute the forces on atoms and translational vectors due to
-C     Grimme DFT-D2 dispersion.
+C     Compute the forces analytically due to Grimme DFT-D2 dispersion.
+C
+C     Arguments
+C     In:
+C     IOut   - Log file to print to
+C     IPrint - Print flag.  Ranges 0-4. Higher prints more
+C     IWhat  - 0 -> Energy, 1 -> Forces, 2 -> Trans. vector forces 
+C              numerically (for consistency check) 
+C     NAtoms - Number of atoms in unit cell
+C     NPDir  - Number of periodic directions (translation vectors)
+C     C      - Array of atom positions, including translation vectors
+C              Atoms are stored first, followed by trans. vectors.
+C     R0     - Array of atomic van der Waal radii.  Atom order is same
+C              as in C array.
+C     C6     - Arrary of atomic C6 coefficients.  Atom order is same as
+C              in C array.
+C     D6     - D6 parameter
+C     S6     - Functional-dependent parameter
+C     SR6    - Some other parameter related to van Der Waals radii
+C     NUCExt - The number of unit cells to extend from the reference
+C              unit cell in 1 direction.
+C
+C     Out:
+C     FXYZ   - Array of forces on atoms and translation vectors.
 C
       Implicit Real*8(A-H,O-Z)
       Dimension C(3,*), FXYZ(3,*)
@@ -24,10 +46,6 @@ C
 
 C     Compute forces on atoms first
 C     Forces for interactions within the primary unit cell
-      If(IPrint.gt.1) then
-        Write(IOut,*)'Forces for interactions within unit cell.'
-        endif
-
       Epuc = 0
       Do 30 I=1,NAtoms
         Do 31 J=I+1,NAtoms
@@ -56,8 +74,6 @@ C     kth component of atoms I and J
             FXYZ(K,I) = FXYZ(K,I) + Fk
             FXYZ(K,J) = FXYZ(K,J) - Fk
 
-
-
    32     Continue
 
           If(IPrint.gt.2) then
@@ -70,7 +86,7 @@ C     kth component of atoms I and J
    30 Continue
 
       If(IPrint.gt.1) then
-        Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms+NPDir)
+        Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms)
         endif
 
 C     Forces for interactions between puc and neighbors
@@ -88,10 +104,6 @@ C       Set loop limits based on dimension of periodicity
           NUC3 = NUCExt
         else
           NUC3 = 0
-          endif
-
-        If(IPrint.gt.1) then
-          Write(IOut,*)'Forces for interactions out of unit cell.'
           endif
 
         Do 40 I=1,NAtoms
@@ -144,7 +156,6 @@ C     kth component of the TVs
                       Fk = -Fk + FDr/RIJ**6
                       Fk = S6*C6IJ*Fk
 
-
                       FXYZ(K,I) = FXYZ(K,I) + Fk
 
    45                 Continue
@@ -166,7 +177,7 @@ C     kth component of the TVs
         endif
 
       If(IPrint.gt.1) then
-        Call PrintM(IOut,'All forces on atoms:',FXYZ,NAtoms+NPDir)
+        Call PrintM(IOut,'All forces on atoms:',FXYZ,NAtoms)
         endif
 
 C     Compute forces on translational vectors

@@ -4,24 +4,28 @@
 C
 C     Compute the energy due to Grimme DFT-D2 dispersion.
 C
-C
 C     Arguments
 C     In:
 C     IOut   - Log file to print to
-C     IPrint - Print flag.  Ranges 0-3
-C              IPrint = 0 -> Nothing
-C              IPrint = 1 -> Basic Information
-C              IPrint = 2 -> Basic Debugging
-C              IPrint = 3 -> Extreme Debugging
+C     IPrint - Print flag.  Ranges 0-4. Higher prints more
+C     IWhat  - 0 -> Energy, 1 -> Forces, 2 -> Trans. vector forces 
+C              numerically (for consistency check) 
 C     NAtoms - Number of atoms in unit cell
 C     NPDir  - Number of periodic directions (translation vectors)
-C     IAn    - Array of atomic numbers of atoms
 C     C      - Array of atom positions, including translation vectors
 C              Atoms are stored first, followed by trans. vectors.
-C     XXJXDHUH
+C     R0     - Array of atomic van der Waal radii.  Atom order is same
+C              as in C array.
+C     C6     - Arrary of atomic C6 coefficients.  Atom order is same as
+C              in C array.
+C     D6     - D6 parameter
+C     S6     - Functional-dependent parameter
+C     SR6    - Some other parameter related to van Der Waals radii
+C     NUCExt - The number of unit cells to extend from the reference
+C              unit cell in 1 direction.
+C
 C     Out:
 C     ED     - Dispersion Energy
-C     FXYZ   - Array of forces on atoms and translation vectors
 C
       Implicit Real*8(A-H,O-Z)
 

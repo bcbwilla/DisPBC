@@ -1,5 +1,8 @@
 *Deck Tests
       Subroutine Tests(IOut,I,C,C6,R0,FXYZ,D6,S6,SR6,NAtoms,NPDir)
+C
+C     Various test cases for DispPBC.
+C
 
       Implicit Real*8(A-H,O-Z)
       Dimension C(3,*),C6(*),R0(*),FXYZ(3,*)
