@@ -145,7 +145,7 @@ C     Translation Vectors
           enddo
 
       else if(I.eq.4) then
-C     Test 3
+C     Test 4
         Write(IOut,*)'Two He atoms with medium 3D unit cell.'
         Write(IOut,*)'Atoms are 4 ang. apart. 8 ang. TVs.'
         NAtoms = 2
@@ -175,6 +175,45 @@ C     Translation Vectors
           C6(J) = C6He
           R0(J) = R0He
           enddo
+
+      else if(I.eq.5) then
+C     Test 5
+        Write(IOut,*)'NeArHe triangle with large unit cell.'
+        Write(IOut,*)'50 Ang TVs.'
+        NAtoms = 3
+        NPDir = 3
+C     Atoms
+        C(1,1) = 0.0
+        C(2,1) = 0.0
+        C(3,1) = 0.0
+
+        C(1,2) = D2A
+        C(2,2) = 0.0
+        C(3,2) = D1A
+
+        C(1,3) = D3A
+        C(2,3) = D3A
+        C(3,3) = 0.0
+C     Translation Vectors
+        C(1,4) = D50A
+        C(2,4) = 0.0
+        C(3,4) = 0.0
+
+        C(1,5) = 0.0
+        C(2,5) = D50A
+        C(3,5) = 0.0
+
+        C(1,6) = 0.0
+        C(2,6) = 0.0
+        C(3,6) = D50A
+
+        
+        C6(1) = C6Ne
+        R0(1) = R0Ne
+        C6(2) = C6Ar
+        R0(2) = R0Ar
+        C6(3) = C6He
+        R0(3) = R0He
 
         endif
 

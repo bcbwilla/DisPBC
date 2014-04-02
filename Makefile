@@ -1,5 +1,4 @@
-
-OBJECTS = util.o tests.o dispe.o dispf.o discon.o dispft.o dispbc.o main.o
+OBJECTS = util.o dispe.o dispf.o discon.o dispft.o dispbc.o tests.o main.o
 .PHONY: clean
 
 out: main.exe
