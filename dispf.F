@@ -70,8 +70,8 @@ C     kth component of atoms I and J
 
             Fk = -S6*C6IJ*(-6*F*(CKI-CKJ)/RIJ**8 + FDr/RIJ**6)
 
-            FXYZ(K,I) = FXYZ(K,I) + Fk
-            FXYZ(K,J) = FXYZ(K,J) - Fk
+            FXYZ(K,I+1) = FXYZ(K,I+1) + Fk
+            FXYZ(K,J+1) = FXYZ(K,J+1) - Fk
 
    32     Continue
 
@@ -85,7 +85,7 @@ C     kth component of atoms I and J
    30 Continue
 
       If(IPrint.gt.1) then
-        Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms)
+        Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms+1)
         endif
 
 C     Forces for interactions between puc and neighbors
@@ -155,7 +155,7 @@ C     kth component of the TVs
                       Fk = -Fk + FDr/RIJ**6
                       Fk = S6*C6IJ*Fk
 
-                      FXYZ(K,I) = FXYZ(K,I) + Fk
+                      FXYZ(K,I+1) = FXYZ(K,I+1) + Fk
 
    45                 Continue
                     
@@ -176,7 +176,7 @@ C     kth component of the TVs
         endif
 
       If(IPrint.gt.1) then
-        Call PrintM(IOut,'All forces on atoms:',FXYZ,NAtoms)
+        Call PrintM(IOut,'All forces on atoms:',FXYZ,NAtoms+1)
         endif
 
 C     Compute forces on translational vectors
@@ -250,7 +250,7 @@ C     Get coefficient based on TV
                         Fk = Ia*6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
                         Fk = Fk + FDr/RIJ**6
                         Fk = S6*C6IJ*Fk
-                        FXYZ(K,NAtoms+IP) = FXYZ(K,NAtoms+IP) + Fk
+                        FXYZ(K,NAtoms+IP+1) = FXYZ(K,NAtoms+IP+1) + Fk
 
    56                   Continue
 
@@ -272,7 +272,7 @@ C     Get coefficient based on TV
         endif
       
       If(IPrint.gt.1) then
-        Call PrintM(IOut,'All forces:',FXYZ,NAtoms+NPDir)
+        Call PrintM(IOut,'All forces:',FXYZ,NAtoms+NPDir+1)
         endif
 
       If(IPrint.gt.1) then
