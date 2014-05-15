@@ -82,7 +82,7 @@ C    Restore translation vector for next calc
    30       Continue
 
           FT = -FPtSt(E,dT)
-          FXYZ(I,NAtoms+N) = FT
+          FXYZ(I,NAtoms+N+1) = FT
 
    20     Continue
 
