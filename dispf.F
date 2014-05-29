@@ -1,5 +1,5 @@
 *Deck DispF
-      Subroutine DispF(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
+      Subroutine DispF(IOut,IPrint,DoNum,NAtoms,NPDir,C,R0,C6,D6,
      $  S6,SR6,NUCExt,FXYZ)
 C
 C     Compute the forces analytically due to Grimme DFT-D2 dispersion.
@@ -10,6 +10,7 @@ C     IOut   - Log file to print to
 C     IPrint - Print flag.  Ranges 0-4. Higher prints more
 C     IWhat  - 0 -> Energy, 1 -> Forces, 2 -> Trans. vector forces 
 C              numerically (for consistency check) 
+C     DoNum  - Compute translation vector forces numerically
 C     NAtoms - Number of atoms in unit cell
 C     NPDir  - Number of periodic directions (translation vectors)
 C     C      - Array of atom positions, including translation vectors
@@ -29,6 +30,7 @@ C     FXYZ   - Array of forces on atoms and translation vectors.
 C
       Implicit Real*8(A-H,O-Z)
       Real*8 C(3,*), FXYZ(3,*), R0(*), C6(*)
+      Logical DoNum
 
  111  Format(' Atom',I5,I5)
  112  Format(' C6I=',F10.5,' C6J=', F10.5,' C6IJ=',F10.5,/,
@@ -115,7 +117,6 @@ C       Set loop limits based on dimension of periodicity
             R0I = R0(I)
             R0J = R0(J)
             R0IJ = R0I + R0J
-
             Do 42 l=-NUC1,NUC1
               Do 43 m=-NUC2,NUC2
                 Do 44 n=-NUC3,NUC3
@@ -163,7 +164,8 @@ C     kth component of the TVs
 
                   If(IPrint.gt.2) then
                     Write(IOut,111)I,J
-                    Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,RIJ,S6,SR6
+                    Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,FDr,RIJ,
+     $                S6,SR6,D6
                     endif
 
    44             Continue
@@ -180,10 +182,11 @@ C     kth component of the TVs
         endif
 
 C     Compute forces on translational vectors
-      If(NPDir.gt.0) then
+      If((NPDir.gt.0).and.(.not.DoNum)) then
 
         If(IPrint.gt.1) then
-          Write(IOut,*)'Forces on translational vectors.'
+          Write(IOut,*)'Computing analytical forces on translational',
+     $      ' vectors.'
           endif
 
 C     For each TV
@@ -206,9 +209,7 @@ C     For each TV
 
 C     Skip central unit cell
                     If(.not.((l.eq.0).and.(m.eq.0).and.(n.eq.0))) then
-
                       Do 56 K=1,3
-
 C     Kth component of atoms I and J
                         CKI = C(K,I)
                         CKJ = C(K,J) 
@@ -242,6 +243,7 @@ C     Get coefficient based on TV
                           Ia = n
                           endif
                       
+     
                         RIJ = RSep(I,J,C,l,m,n,NAtoms,NPDir)
                         F = FDmp(RIJ,D6,SR6,R0IJ)
                         FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,k,C,
@@ -262,13 +264,20 @@ C     Get coefficient based on TV
 
               If(IPrint.gt.2) then
                 Write(IOut,111)I,J
-                Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,RIJ,S6,SR6
+                Write(IOut,112)C6I,C6J,C6IJ,R0I,R0J,R0IJ,F,FDr,RIJ,
+     $            S6,SR6,D6
                 endif
 
    52         Continue
    51       Continue
 
    50     Continue
+
+      else if((NPDir.gt.0).and.(DoNum)) then
+        Write(IOut,*)'Computing dispersion forces on translation',
+     $   ' vectors numerically.'
+        Call DispFT(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
+     $    S6,SR6,NUCExt,FXYZ)
         endif
       
       If(IPrint.gt.1) then

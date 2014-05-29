@@ -151,7 +151,7 @@ C     Test 4
         NAtoms = 2
         NPDir = 3
 C     Atoms
-        C(1,1) =-D2A
+        C(1,1) = -D2A
         C(2,1) = 0.0
         C(3,1) = 0.0
 
@@ -160,7 +160,7 @@ C     Atoms
         C(3,2) = 0.0
 C     Translation Vectors
         C(1,3) = 4*D2A
-        C(2,3) = 0.0
+        C(2,3) = 0.5
         C(3,3) = 0.0
 
         C(1,4) = 0.0
@@ -214,6 +214,49 @@ C     Translation Vectors
         R0(2) = R0Ar
         C6(3) = C6He
         R0(3) = R0He
+
+      else if(I.eq.6) then
+C     Test 4
+        Write(IOut,*)'Two He atoms with medium 3D unit cell.'
+        Write(IOut,*)'Atoms are 4 ang. apart. 8 ang. TVs.'
+        NAtoms = 4
+        NPDir = 3
+C     Atoms
+        C(1,1) = 0.0
+        C(2,1) = 0.71*D1A
+        C(3,1) = 0.0
+
+        C(1,2) = 0.0
+        C(2,2) = -0.71*D1A
+        C(3,2) = 0.0
+
+        C(1,3) = -1.2298*D1A
+        C(2,3) = 1.42*D1A
+        C(3,3) = 0.0
+
+        C(1,4) = 1.2289*D1A
+        C(2,4) = -1.42*D1A
+        C(3,4) = 0.0
+
+C     Translation Vectors
+        C(1,5) = 2.4595*D1A
+        C(2,5) = 0.0
+        C(3,5) = 0.0
+
+        C(1,6) = 0.0
+        C(2,6) = 4.26*D1A
+        C(3,6) = 0.0
+
+        C(1,7) = 0.0
+        C(2,7) = 0.0
+        C(3,7) = 10*D1A
+
+
+        Do J=1,NAtoms
+          C6(J) = C6C
+          R0(J) = R0C
+          enddo
+
 
         endif
 
