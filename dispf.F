@@ -37,13 +37,11 @@ C
      $       ' R0I=',F10.5,' R0J=',F10.5,' R0IJ=',F10.5,/,
      $       ' F=',E12.6,' DF=',E12.6,/,' RIJ=',F10.5,
      $       ' S6=',F10.5,' SR6=',F10.5,' D6=',F10.5)
- 113  Format(' l=',I5,' m=',I5,' n=',I5)
-
+ 113  Format(' l=',I5,' m=',I5,' n=',I5)        
 
       If(IPrint.gt.1) then
         Write(IOut,*)'Entering DispF.'
         endif
-
 
 C     Compute forces on atoms first
 C     Forces for interactions within the primary unit cell
@@ -69,9 +67,7 @@ C     kth component of atoms I and J
             F = FDmp(RIJ,D6,SR6,R0IJ)
             FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,K,
      $              C,0,0,0,0,NAtoms,NPDir,0)                
-
-            Fk = -S6*C6IJ*(-6*F*(CKI-CKJ)/RIJ**8 + FDr/RIJ**6)
-
+            Fk = -S6*C6IJ*(-6D0*F*(CKI-CKJ)/RIJ**8 + FDr/RIJ**6)
             FXYZ(K,I+1) = FXYZ(K,I+1) + Fk
             FXYZ(K,J+1) = FXYZ(K,J+1) - Fk
 
@@ -85,7 +81,6 @@ C     kth component of atoms I and J
 
    31   Continue
    30 Continue
-
       If(IPrint.gt.1) then
         Call PrintM(IOut,'Local forces on atoms:',FXYZ,NAtoms+1)
         endif
@@ -132,19 +127,19 @@ C     kth component of the TVs
                       If(NPDir.ge.1) then
                         T1K = C(k,NAtoms+1)
                       else
-                        T1K = 0
+                        T1K = 0D0
                         endif
                  
                       If(NPDir.ge.2) then
                         T2K = C(k,NAtoms+2)
                       else
-                        T2K = 0
+                        T2K = 0D0
                         endif 
 
                       If(NPDir.ge.3) then
                         T3K = C(k,NAtoms+3)
                       else
-                        T3K = 0
+                        T3K = 0D0
                         endif 
                       
                       RIJ = RSep(I,J,C,l,m,n,NAtoms,NPDir)
@@ -152,7 +147,7 @@ C     kth component of the TVs
                       FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,K,
      $                            C,l,m,n,0,NAtoms,NPDir,0)                
 
-                      Fk = 6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
+                      Fk = 6D0*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
                       Fk = -Fk + FDr/RIJ**6
                       Fk = S6*C6IJ*Fk
 
@@ -219,19 +214,19 @@ C     Translational vector 1
                         If(NPDir.ge.1) then
                           T1K = C(K,NAtoms+1)
                         else
-                          T1K = 0
+                          T1K = 0D0
                           endif
                  
                         If(NPDir.ge.2) then
                           T2K = C(K,NAtoms+2)
                         else
-                          T2K = 0
+                          T2K = 0D0
                           endif 
 
                         If(NPDir.ge.3) then
                           T3K = C(K,NAtoms+3)
                         else
-                          T3K = 0
+                          T3K = 0D0
                           endif 
 
 C     Get coefficient based on TV
@@ -249,7 +244,7 @@ C     Get coefficient based on TV
                         FDr = FDmpDr(RIJ,D6,SR6,R0IJ,F,I,J,k,C,
      $                               l,m,n,IP,NAtoms,NPDir,1)      
 
-                        Fk = Ia*6*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
+                        Fk = Ia*6D0*F*(CKI-CKJ-l*T1K-m*T2K-n*T3K)/RIJ**8
                         Fk = Fk + FDr/RIJ**6
                         Fk = S6*C6IJ*Fk
                         FXYZ(K,NAtoms+IP+1) = FXYZ(K,NAtoms+IP+1) + Fk
@@ -272,7 +267,6 @@ C     Get coefficient based on TV
    51       Continue
 
    50     Continue
-
       else if((NPDir.gt.0).and.(DoNum)) then
         Write(IOut,*)'Computing dispersion forces on translation',
      $   ' vectors numerically.'

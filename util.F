@@ -31,9 +31,9 @@ C     Translational vectors
         T1Y = C(2,NAtoms+1)
         T1Z = C(3,NAtoms+1)
       else
-        T1X = 0
-        T1Y = 0
-        T1Z = 0
+        T1X = 0D0
+        T1Y = 0D0
+        T1Z = 0D0
         endif
      
       If(NPDir.ge.2) then
@@ -41,9 +41,9 @@ C     Translational vectors
         T2Y = C(2,NAtoms+2)
         T2Z = C(3,NAtoms+2)
       else
-        T2X = 0
-        T2Y = 0
-        T2Z = 0
+        T2X = 0D0
+        T2Y = 0D0
+        T2Z = 0D0
         endif 
 
       If(NPDir.ge.3) then
@@ -51,9 +51,9 @@ C     Translational vectors
         T3Y = C(2,NAtoms+3)
         T3Z = C(3,NAtoms+3)
       else
-        T3X = 0
-        T3Y = 0
-        T3Z = 0
+        T3X = 0D0
+        T3Y = 0D0
+        T3Z = 0D0
         endif 
 
 C     Compute the separation distance
@@ -80,7 +80,7 @@ C     R0IJ   - Sum of atomic van der Waal radii for atoms I,J
 C
       Implicit Real*8 (A-H,O-Z)
 
-      FDmp = 1.0 / (1 + Exp(-D6*(RIJ/(SR6*R0IJ) - 1)))
+      FDmp = 1D0 / (1D0 + Exp(-D6*(RIJ/(SR6*R0IJ) - 1D0)))
   
       Return
       End
@@ -120,23 +120,23 @@ C     Get the Kth component of the TVs
       If(NPDir.ge.1) then
         T1K = C(K,NAtoms+1)
       else
-        T1K = 0
+        T1K = 0D0
         endif
      
       If(NPDir.ge.2) then
         T2K = C(K,NAtoms+2)
       else
-        T2K = 0
+        T2K = 0D0
         endif 
 
       If(NPDir.ge.3) then
         T3K = C(K,NAtoms+3)
       else
-        T3K = 0
+        T3K = 0D0
         endif 
 
       FTmp = D6*(CKI - CKJ - l*T1K - m*T2K - n*T3K)
-      FTmp = FTmp * Exp(-D6*(RIJ/(SR6*R0IJ)-1)) * (F**2)
+      FTmp = FTmp * Exp(-D6*(RIJ/(SR6*R0IJ)-1D0)) * (F**2)
       FTmp = FTmp / (RIJ*(SR6*R0IJ))
 
       If(Iwrt.eq.1) then
@@ -145,9 +145,9 @@ C     Differential w.r.t. T
 C     See if you multiply the front by l, m, or n.  This depends on
 C     what TV you're differentiating with respect to.
         If(IP.eq.1) then
-          Ia = m
-        else if(IP.eq.2) then
           Ia = l
+        else if(IP.eq.2) then
+          Ia = m
         else if(IP.eq.3) then
           Ia = n
           endif

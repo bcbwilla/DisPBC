@@ -195,17 +195,17 @@ C     Atoms
         C(2,3) = D3A
         C(3,3) = 0.0
 C     Translation Vectors
-        C(1,4) = D50A
+        C(1,4) = 5*D1A
         C(2,4) = 0.0
         C(3,4) = 0.0
 
         C(1,5) = 0.0
-        C(2,5) = D50A
+        C(2,5) = 5*D1A
         C(3,5) = 0.0
 
         C(1,6) = 0.0
-        C(2,6) = 0.0
-        C(3,6) = D50A
+        C(2,6) = D1A
+        C(3,6) = 5*D1A
 
         
         C6(1) = C6Ne
@@ -257,6 +257,47 @@ C     Translation Vectors
           R0(J) = R0C
           enddo
 
+      else if(I.eq.7) then
+C     Test 7
+        Write(IOut,*)'Graphite'
+        Write(IOut,*)''
+        NAtoms = 4
+        NPDir = 3
+C     Atoms
+        C(1,1) = 0.0
+        C(2,1) = 1.417972*D1A
+        C(3,1) = 0.0
+
+        C(1,2) = 0.0
+        C(2,2) = 0.0
+        C(3,2) = 0.0
+
+        C(1,3) = 1.227999*D1A
+        C(2,3) = 0.708986*D1A
+        C(3,3) = 3.25*D1A
+
+        C(1,4) = 0.0
+        C(2,4) = 0.0
+        C(3,4) = 3.25*D1A
+
+C     Translation Vectors
+        C(1,5) = 2.456*D1A
+        C(2,5) = 0.0
+        C(3,5) = 0.0
+
+        C(1,6) = 1.227878*D1A
+        C(2,6) = 2.127029*D1A
+        C(3,6) = 0.0
+
+        C(1,7) = 0.0
+        C(2,7) = 0.0
+        C(3,7) = 6.5*D1A
+
+
+        Do J=1,NAtoms
+          C6(J) = C6C
+          R0(J) = R0C
+          enddo
 
         endif
 

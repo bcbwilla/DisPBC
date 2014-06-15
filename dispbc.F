@@ -47,7 +47,6 @@ C
       Logical DoCon, DoNum
 
       Write(IOut,*)'Entering DisPBC.'
-      Write(IOut,*)'SR6 D6 ',SR6,D6
 
 C     NUCExt is the number of unit cells to add in one direction
       If(DoCon) then
@@ -57,6 +56,7 @@ C     and compute the energy
         Call DisCon(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
      $    S6,SR6,ECon,NUCExt,ED)
         endif
+
       If(IWhat.eq.0) then
         Write(IOut,*)'Computing dipsersion correction energy.'
         Call DispE(IOut,IPrint,NAtoms,NPDir,C,R0,C6,D6,
@@ -70,8 +70,8 @@ C     and compute the energy
      $    S6,SR6,NUCExt,FXYZ)
 
       else if(IWhat.eq.2) then
-        DoNum = .true.
         Write(IOut,*)'Computing dispersion correction to forces.'
+        DoNum = .true.
         Call DispF(IOut,IPrint,DoNum,NAtoms,NPDir,C,R0,C6,D6,
      $    S6,SR6,NUCExt,FXYZ)
 
